@@ -1,0 +1,88 @@
+CREATE TABLE "public.film" (
+	"id" serial NOT NULL,
+	"name" varchar(255) NOT NULL,
+	"overview" varchar(255) NOT NULL,
+	"trailerUrl" varchar(255) NOT NULL,
+	"realeaseDate" TIME NOT NULL,
+	"priceTicket" DECIMAL NOT NULL,
+	"daysId" integer NOT NULL,
+	CONSTRAINT "film_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.days" (
+	"id" serial NOT NULL,
+	"weekday" varchar(255) NOT NULL,
+	"date" TIME NOT NULL,
+	"showtimesId" integer NOT NULL,
+	CONSTRAINT "days_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.showtimes" (
+	"id" serial NOT NULL,
+	"time" VARCHAR(255) NOT NULL,
+	"seatsId" integer NOT NULL,
+	CONSTRAINT "showtimes_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.seats" (
+	"id" serial NOT NULL,
+	"name" VARCHAR(255) NOT NULL,
+	"isAvailable" BOOLEAN NOT NULL,
+	CONSTRAINT "seats_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.users" (
+	"id" serial NOT NULL,
+	"name" varchar(255) NOT NULL,
+	"email" varchar(255) NOT NULL,
+	CONSTRAINT "users_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.orders" (
+	"id" serial NOT NULL,
+	"clientId" integer NOT NULL,
+	"filmId" integer NOT NULL,
+	CONSTRAINT "orders_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+ALTER TABLE "film" ADD CONSTRAINT "film_fk0" FOREIGN KEY ("daysId") REFERENCES "days"("id");
+
+ALTER TABLE "days" ADD CONSTRAINT "days_fk0" FOREIGN KEY ("showtimesId") REFERENCES "showtimes"("id");
+
+ALTER TABLE "showtimes" ADD CONSTRAINT "showtimes_fk0" FOREIGN KEY ("seatsId") REFERENCES "seats"("id");
+
+
+
+ALTER TABLE "orders" ADD CONSTRAINT "orders_fk0" FOREIGN KEY ("clientId") REFERENCES "users"("id");
+ALTER TABLE "orders" ADD CONSTRAINT "orders_fk1" FOREIGN KEY ("filmId") REFERENCES "film"("id");
+
+
+
+
+
+
+
