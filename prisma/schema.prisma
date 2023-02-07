@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Films {
+  id String @id @unique @default(uuid())
+
+  name              String
+  overview          String
+  priceTicket       Int
+  frontCover        String
+  headerImage       String
+  trailerUrl        String
+  category          String
+  productedAt       String
+  duration          String
+  ageClassification String
+
+  orders Orders[]
+  days   Days[]
+}
+
+model Days {
+  id String @id @unique @default(uuid())
+
+  weekday String
+  date    DateTime
+
+  film   Films  @relation(fields: [filmId], references: [id])
+  filmId String
+
+  showtime Showtimes[]
+}
+
+model Showtimes {
+  id String @id @unique @default(uuid())
+
+  days   Days   @relation(fields: [daysId], references: [id])
+  daysId String
+
+  time  DateTime
+  seats Seats[]
+}
+
+model Seats {
+  id          String  @id @unique @default(uuid())
+  name        String
+  isAvailable Boolean
+
+  showtimes   Showtimes @relation(fields: [showtimesId], references: [id])
+  showtimesId String
+}
+
+model Users {
+  id       String   @id @unique @default(uuid())
+  name     String
+  email    String
+  password String
+  orders   Orders[]
+}
+
+model Orders {
+  user   Users  @relation(fields: [userId], references: [id])
+  userId String
+
+  film   Films  @relation(fields: [filmId], references: [id])
+  filmId String
+
+  buyAt DateTime @default(now())
+
+  @@id([userId, filmId])
+}

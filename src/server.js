@@ -4,13 +4,15 @@ import dotenv from "dotenv";
 import chalk from "chalk";
 
 import filmRouter from "./routes/filmRoute.js"
+import userRouter from "./routes/userRoute.js"
 
 dotenv.config();
 const server = express();
 server.use(cors());
 server.use(express.json());
 
-server.use(filmRouter)
+server.use(filmRouter);
+server.use(userRouter);
 
 
 server.listen(process.env.PORT, () => {
