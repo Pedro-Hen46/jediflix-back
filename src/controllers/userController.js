@@ -9,6 +9,15 @@ export async function createUser(req, res) {
   const _cryptPass = bcrypt.hashSync(password, 10);
 
   try {
+
+    const userAlreadyExists = await prisma.users.findFirst({
+      where :{
+        email
+      }
+    });
+
+    if(userAlreadyExists) return res.status(409).send("User already exists");
+
     await prisma.users.create({
       data: {
         name,
