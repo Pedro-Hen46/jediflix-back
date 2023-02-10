@@ -1,5 +1,8 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
+import "dayjs/locale/pt-br.js";
+
+dayjs.locale = "pt-br";
 
 const prisma = new PrismaClient();
 
@@ -17,11 +20,15 @@ export async function getFilmById(req, res) {
   const { id } = req.params;
 
   try {
+    console.log(dayjs().day(1));
     const film = await prisma.films.findFirst({
       where: {
         id: Number(id),
       },
     });
+   
+
+
     const days = await prisma.days.findFirst({
       where: {
         filmId: Number(id)
@@ -79,7 +86,7 @@ export async function insertFilm(req, res) {
     const showtimes = await prisma.showtimes.create({
       data: {
         daysId: days.id,
-        time: dayjs().format(),
+        time: dayjs().locale('pt-br').format(),
       },
     });
 
