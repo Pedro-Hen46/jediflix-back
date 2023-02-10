@@ -16,5 +16,5 @@ server.use(userRouter);
 
 
 server.listen(process.env.PORT, () => {
-    console.log(chalk.green.bold(`Server is running on port: ${process.env.PORT}`));
+    console.log(chalk.yellow.bgBlack.bold(`Server is running on port: ${process.env.PORT}`));
 })

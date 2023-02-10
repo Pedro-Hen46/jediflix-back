@@ -349,3 +349,22 @@ export async function insertFilm(req, res) {
     res.send(err.message);
   }
 }
+
+export async function getFilmsByCategory(req, res) {
+  
+  try {
+    const { category } = req.body;
+
+    const filmsByCategory = await prisma.films.findMany({
+      where: {
+        category: category,
+      },
+    })
+   
+    if(filmsByCategory.length === 0) return res.status(404).send(`nothing found in category: ${category}`)
+
+    res.status(200).json(filmsByCategory);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
