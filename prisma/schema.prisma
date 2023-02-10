@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Films {
-  id String @id @unique @default(uuid())
+  id Int @id @default(autoincrement())
 
   name              String
   overview          String
@@ -32,12 +32,11 @@ model Days {
   id String @id @unique @default(uuid())
 
   weekday String
-  date    DateTime
-
-  film   Films  @relation(fields: [filmId], references: [id])
-  filmId String
+  date    DateTime @db.Timestamp(3)
 
   showtime Showtimes[]
+  films    Films       @relation(fields: [filmId], references: [id])
+  filmId   Int
 }
 
 model Showtimes {
@@ -71,8 +70,8 @@ model Orders {
   user   Users  @relation(fields: [userId], references: [id])
   userId String
 
-  film   Films  @relation(fields: [filmId], references: [id])
-  filmId String
+  film   Films @relation(fields: [filmId], references: [id])
+  filmId Int
 
   buyAt DateTime @default(now())
 
