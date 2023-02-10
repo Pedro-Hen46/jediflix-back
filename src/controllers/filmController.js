@@ -22,8 +22,37 @@ export async function getFilmById(req, res) {
         id: Number(id),
       },
     });
+    const days = await prisma.days.findFirst({
+      where: {
+        filmId: Number(id)
+      }
+    })
 
-    res.status(200).json(films);
+    const session = await prisma.showtimes.findFirst({
+      where: {
+        daysId: days.id
+      }
+    })
+
+    const seats = await prisma.seats.findMany({
+      where: {
+        showtimesId: { in: session.id}
+      }
+    })
+
+    const DETAILS = {
+      films,
+      days: {
+        weekday: days.weekday,
+        date: days.date,
+      },
+      sessions: {
+        time: session.time
+      },
+      seats
+    }
+
+    res.status(200).json(DETAILS);
   } catch (err) {
     res.send(err.message);
   }
