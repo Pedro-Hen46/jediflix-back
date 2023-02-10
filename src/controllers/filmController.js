@@ -17,7 +17,7 @@ export async function getFilmById(req, res) {
   const { id } = req.params;
 
   try {
-    const films = await prisma.films.findFirst({
+    const film = await prisma.films.findFirst({
       where: {
         id: Number(id),
       },
@@ -41,7 +41,7 @@ export async function getFilmById(req, res) {
     })
 
     const DETAILS = {
-      films,
+      film,
       days: {
         weekday: days.weekday,
         date: days.date,
