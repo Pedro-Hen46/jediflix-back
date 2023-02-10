@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
-import "dayjs/locale/pt-br.js";
 
+import "dayjs/locale/pt-br.js";
 dayjs.locale = "pt-br";
 
 const prisma = new PrismaClient();
@@ -20,32 +20,30 @@ export async function getFilmById(req, res) {
   const { id } = req.params;
 
   try {
-    console.log(dayjs().day(1));
+    
     const film = await prisma.films.findFirst({
       where: {
         id: Number(id),
       },
     });
-   
-
 
     const days = await prisma.days.findFirst({
       where: {
-        filmId: Number(id)
-      }
-    })
+        filmId: Number(id),
+      },
+    });
 
     const session = await prisma.showtimes.findFirst({
       where: {
-        daysId: days.id
-      }
-    })
+        daysId: days.id,
+      },
+    });
 
     const seats = await prisma.seats.findMany({
       where: {
-        showtimesId: { in: session.id}
-      }
-    })
+        showtimesId: { in: session.id },
+      },
+    });
 
     const DETAILS = {
       film,
@@ -54,10 +52,10 @@ export async function getFilmById(req, res) {
         date: days.date,
       },
       sessions: {
-        time: session.time
+        time: session.time,
       },
-      seats
-    }
+      seats,
+    };
 
     res.status(200).json(DETAILS);
   } catch (err) {
@@ -86,7 +84,7 @@ export async function insertFilm(req, res) {
     const showtimes = await prisma.showtimes.create({
       data: {
         daysId: days.id,
-        time: dayjs().locale('pt-br').format(),
+        time: dayjs().locale("pt-br").format(),
       },
     });
 
@@ -345,7 +343,7 @@ export async function insertFilm(req, res) {
         },
       ],
     });
-    
+
     res.status(201).send("Film added successfully");
   } catch (err) {
     res.send(err.message);
