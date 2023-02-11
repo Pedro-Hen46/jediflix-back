@@ -353,7 +353,7 @@ export async function insertFilm(req, res) {
 export async function getFilmsByCategory(req, res) {
   
   try {
-    const { category } = req.body;
+    const { category } = req.params;
 
     const filmsByCategory = await prisma.films.findMany({
       where: {

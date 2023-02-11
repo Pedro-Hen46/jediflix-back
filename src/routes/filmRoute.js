@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/films', getAFilmList);
 router.get('/film/:id', getFilmById);
-router.get('/films/category', getFilmsByCategory);
+router.get('/films/:category', getFilmsByCategory);
 
 
 router.post("/film", insertFilm)
