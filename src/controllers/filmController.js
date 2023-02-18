@@ -2,6 +2,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
 
 import "dayjs/locale/pt-br.js";
+import { query } from "express";
 dayjs.locale = "pt-br";
 
 const prisma = new PrismaClient();
@@ -353,6 +354,7 @@ export async function insertFilm(req, res) {
 export async function getFilmsByCategory(req, res) {
   
   try {
+    console.log(req.params)
     const { category } = req.params;
 
     const filmsByCategory = await prisma.films.findMany({

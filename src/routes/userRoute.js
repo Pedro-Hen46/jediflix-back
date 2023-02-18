@@ -13,6 +13,6 @@ router.post("/login", checkLoginUser, loginUser);
 router.post("/register", checkRegisterUser, createUser);
 
 router.get("/user/:id", authenticatedUser, getUserData); // Rota privada
-router.post("/user-update", checkUserDataUpdate, authenticatedUser, updateUserData); // Rota privada
+router.put("/user-update", checkUserDataUpdate, authenticatedUser, updateUserData); // Rota privada
 
 export default router;
